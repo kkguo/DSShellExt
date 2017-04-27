@@ -33,6 +33,34 @@ namespace KKHomeBrews.ThreeDSShellExt
         public static void postDoRegister(Type type, RegistrationType registrationType)
         {
             Console.WriteLine("Registering " + type.FullName + " Version" + type.Assembly.GetName().Version.ToString());
+
+            #region Clean up older versions registry
+            try
+            {
+                using (RegistryKey key = Registry.ClassesRoot.OpenSubKey(@"\CLSID\" +
+                    type.GUID.ToRegistryString() + @"\InprocServer32"))
+                {
+                    if (key != null && key.GetSubKeyNames().Count() != 0)
+                    {
+                        Console.WriteLine("Found old version in registry, cleaning up ...");
+                        foreach (var k in key.GetSubKeyNames())
+                        {
+                            if (k != type.Assembly.GetName().Version.ToString())
+                            {
+                                Registry.ClassesRoot.DeleteSubKeyTree(@"\CLSID\" +
+                        type.GUID.ToRegistryString() + @"\InprocServer32\" + k);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Cleaning up older version but see exception. "
+                     + e.Message);
+            }
+
+            #endregion
             #region Enable debug log
 #if DEBUG
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE", true).CreateSubKey(@"SharpShell", RegistryKeyPermissionCheck.ReadWriteSubTree))
