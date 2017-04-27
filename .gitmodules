@@ -1,0 +1,3 @@
+[submodule "3dsShellExt/sharpshell"]
+	path = 3dsShellExt/sharpshell
+	url = https://github.com/kkguo/sharpshell.git
