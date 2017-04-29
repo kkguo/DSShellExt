@@ -1,12 +1,12 @@
-# 3dsShellExt -- Shell extension for 3DS executables
+# DSShellExt -- Shell extension for 3DS executables
 
-Currently supporting .CIA .3DSX .SMDH
+Currently supporting .CIA .3DSX .SMDH .NDS
 
 Should work on WinXP above, but only verified on Win10 x64, 
 please let me know if it works for your system.
 
 ## Snapshot
-![snapshot](https://github.com/kkguo/3dsShellExt/blob/master/3dsShellExt/Resources/snapshot.jpg?raw=true)
+![snapshot](https://github.com/kkguo/DSShellExt/blob/master/DSShellExt/Resources/snapshot.jpg?raw=true)
 
 ## Install
 * You should have [.Net 4.5 or above](http://www.microsoft.com/en-US/download/details.aspx?id=48130) installed
