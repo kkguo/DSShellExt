@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace KKHomeBrews.ThreeDSShellExt
+namespace KKHomeBrews.DSShellExt
 {
-    class ThreeDSReader
+    class DSReader
     {
-        public ThreeDSReader(String file)
+        public DSReader(String file)
         {
             _file = file;
         }
@@ -29,6 +29,8 @@ namespace KKHomeBrews.ThreeDSShellExt
                     return extractIcon3DSX();
                 else if (ext == ".smdh")
                     return extractIconSMDH();
+                else if (ext == ".nds")
+                    return extractIconNDS();
                 else
                 {
                     SharpShell.Diagnostics.Logging.Log("extension is not right, Cannot extract");
@@ -38,7 +40,47 @@ namespace KKHomeBrews.ThreeDSShellExt
         }
 
         private String _file;
-        public Bitmap extractIconCIA()
+
+        private Bitmap extractIconNDS()
+        {
+            using (FileStream fs = new FileStream(_file, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (BinaryReader br = new BinaryReader(fs))
+            {
+                fs.Seek(0x68, SeekOrigin.Begin);
+                UInt32 iconOffset = br.ReadUInt32();
+                fs.Seek(iconOffset, SeekOrigin.Begin);
+                fs.Seek(0x20, SeekOrigin.Current);
+                byte[] icon = new byte[32 * 32];
+
+                for (var tiley = 0; tiley < 4; tiley++) //tile 4x4
+                    for (var tilex = 0; tilex < 4; tilex++)
+                    {
+                        for (var y = 0; y < 8; y++)
+                            for (var x = 0; x < 8; x += 2) // every byte 2 pixels
+                            {
+                                int ind = (tiley * 8 + y) * 32 + tilex * 8 + x;
+                                byte b = br.ReadByte();
+                                icon[ind] = (byte)(b & 0xF);
+                                icon[ind + 1] = (byte)((b & 0xF0) >> 4);
+                            }
+                    }
+                Bitmap bmp = new Bitmap(32, 32, 32, PixelFormat.Format8bppIndexed, Marshal.UnsafeAddrOfPinnedArrayElement(icon, 0));
+                ColorPalette palette = bmp.Palette;
+                for (int i = 0; i < 0x10; i++)
+                {
+                    UInt16 rawpal = br.ReadUInt16();
+                    int r = rawpal & 0x001F;
+                    int g = (rawpal & 0x03E0) >> 5;
+                    int b = (rawpal & 0x7C00) >> 10;
+                    palette.Entries[i] = Color.FromArgb(255, r * 8, g * 8, b * 8);
+                }
+                bmp.Palette = palette;
+                //bmp.MakeTransparent(bmp.Palette.Entries[0]);
+                return bmp;
+            }
+        }
+
+        private Bitmap extractIconCIA()
         {
             try
             {
@@ -76,7 +118,7 @@ namespace KKHomeBrews.ThreeDSShellExt
             }
         }
 
-        public Bitmap extractIcon3DSX()
+        private Bitmap extractIcon3DSX()
         {
             using (FileStream fs = new FileStream(_file, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (BinaryReader br = new BinaryReader(fs))
@@ -91,7 +133,7 @@ namespace KKHomeBrews.ThreeDSShellExt
             }
         }
 
-        public Bitmap extractIconSMDH()
+        private Bitmap extractIconSMDH()
         {
             using (FileStream fs = new FileStream(_file, FileMode.Open, FileAccess.Read, FileShare.Read))
             {

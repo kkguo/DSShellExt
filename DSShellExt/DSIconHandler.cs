@@ -12,7 +12,7 @@ using SharpShell.SharpIconHandler;
 using System.Runtime.InteropServices;
 using System.Drawing;
 
-namespace KKHomeBrews.ThreeDSShellExt
+namespace KKHomeBrews.DSShellExt
 {
     [Guid("c4f7c2cc-9937-4f7c-bf67-1de48dd6f556")]
     [ComVisible(true)]
@@ -20,11 +20,12 @@ namespace KKHomeBrews.ThreeDSShellExt
     [COMServerAssociation(AssociationType.ClassOfExtension, ".cia")]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".3dsx")]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".smdh")]
+    [COMServerAssociation(AssociationType.ClassOfExtension, ".nds")]
     public class IconHandler : SharpIconHandler
     {
         protected override Icon GetIcon(bool smallIcon, uint iconSize)
         {
-            ThreeDSReader reader = new ThreeDSReader(SelectedItemPath);
+            DSReader reader = new DSReader(SelectedItemPath);
             Bitmap bmp = reader.Icon;
             return Icon.FromHandle(ResizeBitmap(reader.Icon,new Size((int)iconSize,(int)iconSize)).GetHicon());
         }

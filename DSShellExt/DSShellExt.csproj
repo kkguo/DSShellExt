@@ -35,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>3DSShellext.key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DSShellext.key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -72,8 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="3DSFileReader.cs" />
-    <Compile Include="3DSIconHandler.cs" />
+    <Compile Include="DSFileReader.cs" />
+    <Compile Include="DSIconHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sharpshell\SharpShell\SharpShell\Attributes\AssociationType.cs" />
     <Compile Include="sharpshell\SharpShell\SharpShell\Attributes\COMServerAssociationAttribute.cs" />
@@ -317,7 +317,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="3DSShellext.key.snk" />
+    <None Include="DSShellext.key.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

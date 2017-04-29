@@ -3,14 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DSShellExt", "3dsShellExt\3DSShellExt.csproj", "{100A5A12-B7FF-4913-A99A-4C309D316D8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSShellExt", "DSShellExt\DSShellExt.csproj", "{100A5A12-B7FF-4913-A99A-4C309D316D8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{100A5A12-B7FF-4913-A99A-4C309D316D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
