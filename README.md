@@ -1,8 +1,8 @@
 # DSShellExt -- Shell extension for 3DS executables
 
-Currently supporting .CIA .3DSX .SMDH .NDS
+Supporting decrypted .CIA .3DSX .SMDH .NDS .3DS files
 
-Should work on WinXP above, but only verified on Win10 x64, 
+Should work on WinVista above(as .net 4.5 required), but only verified on Win10 x64, 
 please let me know if it works for your system.
 
 ## Snapshot
