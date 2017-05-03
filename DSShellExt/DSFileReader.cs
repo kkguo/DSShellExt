@@ -94,22 +94,23 @@ namespace KKHomeBrews.DSShellExt
                     UInt32 ticketSize = br.ReadUInt32();
                     UInt32 TMDSize = br.ReadUInt32();
                     UInt32 metaSize = br.ReadUInt32();
-
-                    if (metaSize == 0)
-                    {
-                        SharpShell.Diagnostics.Logging.Log("metasize == 0");
-                        return null;
-                    }
                     UInt32 contentSize = br.ReadUInt32();
                     align64bytes(ref headerSize);
                     align64bytes(ref ccSize);
                     align64bytes(ref ticketSize);
                     align64bytes(ref TMDSize);
                     align64bytes(ref contentSize);
-                    fs.Seek(headerSize + ccSize + ticketSize + TMDSize + contentSize, SeekOrigin.Begin); // start of Meta
-                    fs.Seek(0x400, SeekOrigin.Current); // SMDH
-
-                    return extractIconSMDH(fs);
+                    if (metaSize == 0)
+                    {
+                        fs.Seek(headerSize + ccSize + ticketSize + TMDSize, SeekOrigin.Begin);
+                        return extractIconNCCH(fs);
+                    }
+                    else
+                    {
+                        fs.Seek(headerSize + ccSize + ticketSize + TMDSize + contentSize, SeekOrigin.Begin); // start of Meta
+                        fs.Seek(0x400, SeekOrigin.Current); // SMDH
+                        return extractIconSMDH(fs);
+                    }
                 }
             } catch (Exception e)
             {
@@ -149,8 +150,46 @@ namespace KKHomeBrews.DSShellExt
             fs.Seek(0x480, SeekOrigin.Current); // skip small icon
             byte[] icnrawdata = new byte[0x1200];
             fs.Read(icnrawdata, 0, icnrawdata.Length);
-            byte[] icndata = new byte[icnrawdata.Length];
-            MemoryStream raw = new MemoryStream(icnrawdata);
+            return convertIcon(icnrawdata);
+        }
+
+        private Bitmap extractIconNCCH(FileStream fs)
+        {
+            using (BinaryReader br = new BinaryReader(fs, Encoding.Default, true))
+            {
+                long head = fs.Position;
+                //fs.Seek(0x100, SeekOrigin.Current);// RSA-2048 signature of NCCH header
+                //br.ReadUInt32(); // "NCCH"
+                fs.Seek(head + 0x188, SeekOrigin.Begin);
+                byte[] flags = br.ReadBytes(8);
+                if ((int)(flags[7] & 0x8) > 0) // NoCrypto
+                {
+                    fs.Seek(head + 0x1A0, SeekOrigin.Begin); // ExeFS offset
+                    UInt32 offset = br.ReadUInt32();
+                    //UInt32 size = br.ReadUInt32();
+                    head += offset * 0x200;
+                    fs.Seek(head, SeekOrigin.Begin); // ExeFS
+                    for (int i = 0; i < 10; i++)
+                    {
+                        fs.Seek(head + 16 * i, SeekOrigin.Begin);
+                        String name = System.Text.Encoding.Default.GetString(br.ReadBytes(8));
+
+                        if (name.StartsWith("icon\0"))
+                        {
+                            UInt32 foffset = br.ReadUInt32();
+                            fs.Seek(head + 0x200 + foffset, SeekOrigin.Begin); // SMDH
+                            return extractIconSMDH(fs);
+                        }
+                    }
+                }
+                return null;
+            }
+        }
+
+        private Bitmap convertIcon(byte[] rawdata)
+        {
+            byte[] icndata = new byte[rawdata.Length];
+            MemoryStream raw = new MemoryStream(rawdata);
 
             int iconSize = (int)Math.Sqrt(raw.Length / 2); // assume icon is square.
             for (var tiley = 0; tiley < iconSize / 8; tiley++) // tile is 8x8
@@ -165,8 +204,9 @@ namespace KKHomeBrews.DSShellExt
                                     for (var yyy = 0; yyy < 2; yyy++)
                                         for (var xxx = 0; xxx < 2; xxx++)
                                         {
-                                            icndata[((tiley * 8 + y * 4 + yy * 2 + yyy) * iconSize + (tilex * 8 + x * 4 + xx * 2 + xxx)) * 2] = (byte)raw.ReadByte();
-                                            icndata[((tiley * 8 + y * 4 + yy * 2 + yyy) * iconSize + (tilex * 8 + x * 4 + xx * 2 + xxx)) * 2 + 1] = (byte)raw.ReadByte();
+                                            int ind = ((tiley * 8 + y * 4 + yy * 2 + yyy) * iconSize + (tilex * 8 + x * 4 + xx * 2 + xxx)) * 2;
+                                            icndata[ind] = (byte)raw.ReadByte();
+                                            icndata[ind + 1] = (byte)raw.ReadByte();
                                         }
                                 }
                         }
