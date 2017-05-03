@@ -31,6 +31,8 @@ namespace KKHomeBrews.DSShellExt
                     return extractIconSMDH();
                 else if (ext == ".nds")
                     return extractIconNDS();
+                else if (ext == ".3ds")
+                    return extractIcon3DS();
                 else
                 {
                     SharpShell.Diagnostics.Logging.Log("extension is not right, Cannot extract");
@@ -40,6 +42,16 @@ namespace KKHomeBrews.DSShellExt
         }
 
         private String _file;
+
+        private Bitmap extractIcon3DS()
+        {
+            using (FileStream fs = new FileStream(_file, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (BinaryReader br = new BinaryReader(fs))
+            {
+                fs.Seek(0x4000, SeekOrigin.Begin);
+                return extractIconNCCH(fs);
+            }
+        }
 
         private Bitmap extractIconNDS()
         {

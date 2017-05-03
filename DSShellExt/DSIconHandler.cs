@@ -18,6 +18,7 @@ namespace KKHomeBrews.DSShellExt
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.None)]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".cia")]
+    [COMServerAssociation(AssociationType.ClassOfExtension, ".3ds")]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".3dsx")]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".smdh")]
     [COMServerAssociation(AssociationType.ClassOfExtension, ".nds")]
