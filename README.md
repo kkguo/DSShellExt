@@ -16,6 +16,12 @@ Please let me know if it works for your system.
 * extract zip
 * run install.bat
 
+## Update
+* Run uninstall.bat first
+* Extract the [latest release zip](https://github.com/kkguo/DSShellExt/releases) and overwrite everything.
+* If the file cannot be overwriten, you can restart computer or run restart_expolorer.bat, this will kill your desktop and file browser. Then repeat above step after your desktop show up.
+* Run install.bat again
+
 ## Uninstall
 * run uninstall.bat
 
