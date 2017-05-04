@@ -6,7 +6,7 @@ Should work on WinXP above(with .net 4.0 or above), verified on Win10 x64, Win8.
 
 Please let me know if it works for your system.
 ## Discussion
-![GBATemp](https://gbatemp.net/threads/3dsshellext-show-cia-3dsx-smdh-icons-in-windows.468928)
+[GBATemp](https://gbatemp.net/threads/3dsshellext-show-cia-3dsx-smdh-icons-in-windows.468928)
 
 ## Snapshot
 ![snapshot](https://github.com/kkguo/DSShellExt/blob/master/DSShellExt/Resources/snapshot.jpg?raw=true)
