@@ -317,6 +317,9 @@
     <None Include="Resources\Icon3DS.png" />
     <Content Include="sharpshell\SharpShell\SharpShell\NativeBridge\SharpShellNativeBridge32.dll" />
     <Content Include="sharpshell\SharpShell\SharpShell\NativeBridge\SharpShellNativeBridge64.dll" />
+    <None Include="Resources\install.bat" />
+    <None Include="Resources\restart_explorer.bat" />
+    <None Include="Resources\uninstall.bat" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

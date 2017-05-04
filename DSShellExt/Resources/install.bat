@@ -39,8 +39,8 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :--------------------------------------
 
-REM SYSTEMINFO | FIND /i "x64-based pc"
-echo %PROCESSOR_IDENTIFIER% | FIND /i "x86"
+REM SYSTEMINFO | %windir%\system32\FIND /i "x64-based pc"
+echo %PROCESSOR_IDENTIFIER% | %windir%\system32\FIND /i "x86"
 
 set FRAMEWORK=%windir%\Microsoft.NET\Framework
 set DOTNETVERSION=v4.0.30319
