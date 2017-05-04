@@ -28,7 +28,9 @@ namespace KKHomeBrews.DSShellExt
         {
             DSReader reader = new DSReader(SelectedItemPath);
             Bitmap bmp = reader.Icon;
-            return Icon.FromHandle(ResizeBitmap(reader.Icon,new Size((int)iconSize,(int)iconSize)).GetHicon());
+            if (bmp == null)
+                bmp = Properties.Resources.Icon3DS;
+            return Icon.FromHandle(ResizeBitmap(bmp,new Size((int)iconSize,(int)iconSize)).GetHicon());
         }
 
         [CustomRegisterFunction]
