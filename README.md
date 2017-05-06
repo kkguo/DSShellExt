@@ -12,7 +12,7 @@ Please let me know if it works for your system.
 ![snapshot](https://github.com/kkguo/DSShellExt/blob/master/DSShellExt/Resources/snapshot.jpg?raw=true)
 
 ## Install
-* You should have [.Net 4.0 or above](http://www.microsoft.com/en-US/download/details.aspx?id=48130) installed
+* You should have [.Net 4.0 or above](https://www.microsoft.com/net/download/framework) installed
 * extract zip
 * run install.bat
 
